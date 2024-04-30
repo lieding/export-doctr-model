@@ -4,11 +4,11 @@ import tensorflow as tf
 from tensorflow.keras import layers
 from tensorflow.keras.models import Model, Sequential
 
-from config import default_cfgs
-from utils import load_pretrained_params, _bf16_to_float32
+from .config import default_cfgs
+from .utils import load_pretrained_params, _bf16_to_float32
 
-from crnn import RecognitionPostProcessor, RecognitionModel
-from vgg_16 import vgg16_bn_r
+from .core import RecognitionPostProcessor, RecognitionModel
+from .vgg_16 import vgg16_bn_r
 
 class CTCPostProcessor(RecognitionPostProcessor):
     """Postprocess raw prediction of the model (logits) to a list of words using CTC decoding
