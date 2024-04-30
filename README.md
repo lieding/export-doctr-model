@@ -1,0 +1,1 @@
+For exporting DOcTR tensorflow modle in `SavedModel` format
