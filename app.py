@@ -1,8 +1,5 @@
-from .crnn import crnn_vgg16_bn
-import tensorflow as tf
-
-model = crnn_vgg16_bn(pretrained=True)
+from .crnn import crnn_mobilenet_v3_large
 
 def execute():
-  model = crnn_vgg16_bn(pretrained=True)
-  tf.saved_model.save(model, "../output/crnn_vgg16_bn.h5")
+  model = crnn_mobilenet_v3_large(pretrained=True, exportable=True)
+  return model

@@ -9,6 +9,7 @@ from .utils import load_pretrained_params, _bf16_to_float32
 
 from .core import RecognitionPostProcessor, RecognitionModel
 from .vgg_16 import vgg16_bn_r
+from .mobilenet_v3_large import mobilenet_v3_large_r
 
 class CTCPostProcessor(RecognitionPostProcessor):
     """Postprocess raw prediction of the model (logits) to a list of words using CTC decoding
@@ -159,8 +160,8 @@ class CRNN(RecognitionModel, Model):
         top_paths: int = 1,
         **kwargs: Any,
     ) -> Dict[str, Any]:
-        if kwargs.get("training", False) and target is None:
-            raise ValueError("Need to provide labels during training")
+        # if kwargs.get("training", False) and target is None:
+        #    raise ValueError("Need to provide labels during training")
 
         features = self.feat_extractor(x, **kwargs)
         # B x H x W x C --> B x W x H x C
@@ -239,3 +240,24 @@ def crnn_vgg16_bn(pretrained: bool = False, **kwargs: Any) -> CRNN:
         text recognition architecture
     """
     return _crnn("crnn_vgg16_bn", pretrained, vgg16_bn_r, **kwargs)
+
+def crnn_mobilenet_v3_large(pretrained: bool = False, **kwargs: Any) -> CRNN:
+    """CRNN with a MobileNet V3 Large backbone as described in `"An End-to-End Trainable Neural Network for Image-based
+    Sequence Recognition and Its Application to Scene Text Recognition" <https://arxiv.org/pdf/1507.05717.pdf>`_.
+
+    >>> import tensorflow as tf
+    >>> from doctr.models import crnn_mobilenet_v3_large
+    >>> model = crnn_mobilenet_v3_large(pretrained=True)
+    >>> input_tensor = tf.random.uniform(shape=[1, 32, 128, 3], maxval=1, dtype=tf.float32)
+    >>> out = model(input_tensor)
+
+    Args:
+    ----
+        pretrained (bool): If True, returns a model pre-trained on our text recognition dataset
+        **kwargs: keyword arguments of the CRNN architecture
+
+    Returns:
+    -------
+        text recognition architecture
+    """
+    return _crnn("crnn_mobilenet_v3_large", pretrained, mobilenet_v3_large_r, **kwargs)
