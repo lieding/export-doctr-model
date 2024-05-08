@@ -284,12 +284,12 @@ def _mobilenet_v3(arch: str, pretrained: bool, rect_strides: bool = False, **kwa
 def mobilenet_v3_large_r(pretrained: bool = False, **kwargs: Any) -> MobileNetV3:
     """MobileNetV3-Large architecture as described in
     `"Searching for MobileNetV3",
-    <https://arxiv.org/pdf/1905.02244.pdf>`_, with rectangular pooling.
+    <https://arxiv.org/pdf/1905.02244.pdf>`_.
 
-    >>> import torch
+    >>> import tensorflow as tf
     >>> from doctr.models import mobilenet_v3_large_r
     >>> model = mobilenet_v3_large_r(pretrained=False)
-    >>> input_tensor = torch.rand((1, 3, 512, 512), dtype=torch.float32)
+    >>> input_tensor = tf.random.uniform(shape=[1, 512, 512, 3], maxval=1, dtype=tf.float32)
     >>> out = model(input_tensor)
 
     Args:
@@ -299,12 +299,6 @@ def mobilenet_v3_large_r(pretrained: bool = False, **kwargs: Any) -> MobileNetV3
 
     Returns:
     -------
-        a torch.nn.Module
+        a keras.Model
     """
-    return _mobilenet_v3(
-        "mobilenet_v3_large_r",
-        pretrained,
-        ["features.4.block.1.0", "features.7.block.1.0", "features.13.block.1.0"],
-        ignore_keys=["classifier.3.weight", "classifier.3.bias"],
-        **kwargs,
-    )
+    return _mobilenet_v3("mobilenet_v3_large_r", pretrained, True, **kwargs)
